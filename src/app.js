@@ -16,7 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/', userRoutes);
 app.use('/api/v2/', jewellaryRoutes);
 app.use('/api/v3/', orderRoutes);
-
+app.use('/health', (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
 // add associations
 jewellary.hasMany(Order, { foreignKey: 'jewellaryId' });
 Order.belongsTo(jewellary, { foreignKey: 'jewellaryId' });
